@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactGA from 'react-ga';
+ReactGA.initialize('UA-83868683-1');
 require("../styles/Report.css");
 
 const Report = React.createClass({
@@ -24,6 +26,12 @@ const Report = React.createClass({
 		if(report.name == "CoastalWatch"){
 			return 'coastalwatch report'
 		}
+	},
+	handleLeavingClick(site){
+		ReactGA.event({
+      		category: 'Leaving site',
+      		action: 'left partywave to view origial ' + site + ' report',
+      	});
 	},
 	render(){
 		let report = this.props.report;
@@ -61,16 +69,16 @@ const Report = React.createClass({
 
 	      	<div className="report-description">
 	      		<p className="description">
-	      			<span className="description-title">DESCRIPTION:</span>
-	      			{report.content}
+	      			<span className="description-title">DESCRIPTION: </span>
+	      				{report.content}
 	      		</p>
-	      		<span> Full report on <a href={"https://www." + report.name + ".com"}>{report.name}</a></span>
+	      		<span className="fullReport">
+	      				<a href={report.url} target="_blank" onClick={this.handleLeavingClick.bind(this, report.name)}>Full report</a>
+	      		</span>
 	      	</div>
-
 	      </div>
 	    )
 	}
-
 });
 
 module.exports = Report;
